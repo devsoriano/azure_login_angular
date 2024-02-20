@@ -22,10 +22,20 @@ export class MaslGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.instance.getActiveAccount() == null) {
-      console.log('not logged in!');
-      return false;
+    // Verificar si hay un usuario activo en MSAL
+    const activeAccount = this.authService.instance.getActiveAccount();
+    if (activeAccount) {
+      return true;
     }
-    return true;
+
+    // Si no hay usuario activo en MSAL, verificar en localStorage
+    const loggedIn = localStorage.getItem('loggedIn') === 'true';
+    if (loggedIn) {
+      return true;
+    }
+
+    // Si no hay usuario activo ni en MSAL ni en localStorage, redirigir al inicio de sesión
+    console.log('User not logged in!');
+    return false;
   }
 }

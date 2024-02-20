@@ -10,6 +10,7 @@ import {
 } from '@azure/msal-browser';
 import { PublicPageComponent } from './public-page/public-page.component';
 import { RestrictedPageComponent } from './restricted-page/restricted-page.component';
+import { AuthService } from './auth.service';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
@@ -29,6 +30,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
       useFactory: MSALInstanceFactory,
     },
     MsalService,
+    AuthService,
   ],
   bootstrap: [AppComponent],
 })

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
-// import { AuthenticationResult } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-root',
@@ -9,30 +8,40 @@ import { MsalService } from '@azure/msal-angular';
 })
 export class AppComponent implements OnInit {
   title = 'login-azure-demo';
+  loggedIn: boolean = false;
 
   constructor(private msalService: MsalService) {}
+
   ngOnInit(): void {
-    this.msalService.instance.handleRedirectPromise().then((res) => {
-      if (res != null && res.account != null) {
-        this.msalService.instance.setActiveAccount(res.account);
+    this.checkAccount();
+
+    // Suscribirse al evento de inicio de sesión
+    this.msalService.handleRedirectObservable().subscribe((result) => {
+      if (result && result.account) {
+        localStorage.setItem('loggedIn', 'true');
+        this.loggedIn = true;
       }
     });
   }
 
+  checkAccount() {
+    const account = this.msalService.instance.getActiveAccount();
+    if (account || localStorage.getItem('loggedIn') === 'true') {
+      this.loggedIn = true;
+    }
+  }
+
   isLoggedIn(): boolean {
-    return this.msalService.instance.getActiveAccount() != null;
+    return this.loggedIn;
   }
 
   login() {
     this.msalService.loginRedirect();
-    // this.msalService
-    //   .loginPopup()
-    //   .subscribe((response: AuthenticationResult) => {
-    //     this.msalService.instance.setActiveAccount(response.account);
-    //   });
   }
 
   logout() {
     this.msalService.logout();
+    localStorage.removeItem('loggedIn');
+    this.loggedIn = false;
   }
 }

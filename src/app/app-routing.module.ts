@@ -12,9 +12,9 @@ const routes: Routes = [
   {
     path: 'restricted-page',
     component: RestrictedPageComponent,
-    canActivate: [MaslGuard],
+    canActivate: [MaslGuard], // Proteger la ruta con el guardián
   },
-  { path: '**', component: PublicPageComponent },
+  { path: '**', component: PublicPageComponent }, // Ruta por defecto
 ];
 
 @NgModule({
