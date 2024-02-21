@@ -15,8 +15,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.checkAccount();
     this.msalService.handleRedirectObservable().subscribe((result) => {
+      console.log('result::::::', result);
       if (result && result.account) {
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('username', result.account.username);
         this.loggedIn = true;
       }
     });
@@ -40,6 +42,7 @@ export class AppComponent implements OnInit {
   logout() {
     this.msalService.logout();
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('username');
     this.loggedIn = false;
   }
 }

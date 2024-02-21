@@ -11,9 +11,7 @@ export class RestrictedPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  getName(): string | undefined {
-    const username = this.msalService.instance.getActiveAccount()?.username;
-    console.log('username: ', username);
-    return username;
+  getName(): string | null {
+    return localStorage.getItem('username');
   }
 }
