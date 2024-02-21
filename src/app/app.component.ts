@@ -14,8 +14,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkAccount();
-
-    // Suscribirse al evento de inicio de sesión
     this.msalService.handleRedirectObservable().subscribe((result) => {
       if (result && result.account) {
         localStorage.setItem('loggedIn', 'true');

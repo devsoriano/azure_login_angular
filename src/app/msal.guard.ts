@@ -11,8 +11,8 @@ import { MsalService } from '@azure/msal-angular';
 @Injectable({
   providedIn: 'root',
 })
-export class MaslGuard implements CanActivate {
-  constructor(private authService: MsalService) {}
+export class MsalGuard implements CanActivate {
+  constructor(private msalService: MsalService) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,7 +23,8 @@ export class MaslGuard implements CanActivate {
     | boolean
     | UrlTree {
     // Verificar si hay un usuario activo en MSAL
-    const activeAccount = this.authService.instance.getActiveAccount();
+    const activeAccount = this.msalService.instance.getActiveAccount();
+
     if (activeAccount) {
       return true;
     }
